@@ -1,0 +1,6 @@
+[submodule "src/app/images/Arknight-Images"]
+	path = src/app/images/Arknight-Images
+	url = https://github.com/PuppiizSunniiz/Arknight-Images.git
+[submodule "src/app/data/ArknightsGameData_YoStar"]
+	path = src/app/data/ArknightsGameData_YoStar
+	url = https://github.com/Kengxxiao/ArknightsGameData_YoStar.git
