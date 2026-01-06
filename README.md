@@ -1,7 +1,9 @@
 ## Arknights 
 Web page for showing mastery guides from external sources and more. \
-Made using Next.js, React, Tailwind \
+Made using Next.js, React, Tailwind, Shadcn \
 Requires backend 
+
+Arts for Arknights taken from PuppiizSunniiz's [Arknight Images](https://github.com/PuppiizSunniiz/Arknight-Images)
 
 First, run the development server:
 
