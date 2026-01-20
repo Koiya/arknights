@@ -30,7 +30,7 @@ export default function RootLayout({
       >
         <div className="flex min-h-screen">
           <Navbar />
-          <main className="flex-1 md:ml-48 min-h-screen">
+          <main className="flex-1 md:ml-48 min-h-screen  bg-gradient-to-br from-neutral-900 via-slate-900 to-neutral-900 ">
             {children}
           </main>
         </div>

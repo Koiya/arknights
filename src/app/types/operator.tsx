@@ -1,6 +1,14 @@
-interface Skill {
-    skillId: string;
+
+interface SkillRanks {
+    grades: string[];
+    level: string;
 }
+
+export interface Skill {
+    skillId: string;
+    skillRanks: SkillRanks[];
+}
+
 export interface Operator {
     name: string;
     skills: Skill[];

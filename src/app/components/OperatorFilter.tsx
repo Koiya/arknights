@@ -3,6 +3,7 @@ import { useState, ChangeEvent, Dispatch} from 'react';
 
 import { Button } from "@/components/ui/button"
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { ButtonGroup } from "@/components/ui/button-group"
 import { Search } from "lucide-react";
 
@@ -18,84 +19,90 @@ import vanguardIcon from '../images/class_vanguard.png';
 type OperatorFilterProps = {
     searchTerm?: string;
     setSearchTerm: Dispatch<React.SetStateAction<string>>;
-    setPage?: Dispatch<React.SetStateAction<number>>;
+    setSelectedRarity: Dispatch<React.SetStateAction<string>>;
+    setSelectedClass: Dispatch<React.SetStateAction<string>>;
+    setPage: Dispatch<React.SetStateAction<number>>;
 };
 
 type ClassButtonProps= {
     img: string;
     className: string;
+    internalID: string;
 }
-export default function OperatorFilter({searchTerm, setSearchTerm, setPage}: OperatorFilterProps){
+export default function OperatorFilter({searchTerm, setSearchTerm, setSelectedRarity, setSelectedClass, setPage}: OperatorFilterProps){
     // const [inputValue, setInputValue] = useState("");
     const [classFilter, setClassFilter] = useState("All");
 
     const arknightsClasses = [
         {
             name: "Vanguard",
-            icon: vanguardIcon.src
+            icon: vanguardIcon.src,
+            internalID: "PIONEER"
         },
         {
             name: "Guard",
-            icon: guardIcon.src
+            icon: guardIcon.src,
+            internalID: "WARRIOR"
         },
         {
             name: "Sniper",
-            icon: sniperIcon.src
+            icon: sniperIcon.src,
+            internalID: "SNIPER"
         },
         {
             name: "Caster",
-            icon: casterIcon.src
+            icon: casterIcon.src,
+            internalID: "CASTER"
         },
         {
             name: "Medic",
-            icon: medicIcon.src
+            icon: medicIcon.src,
+            internalID: "MEDIC"
         },
         {
             name: "Defender",
-            icon: defenderIcon.src
+            icon: defenderIcon.src,
+            internalID: "TANK"
         },
         {
             name: "Supporter",
-            icon: supporterIcon.src
+            icon: supporterIcon.src,
+            internalID: "SUPPORT"
         },
         {
             name: "Specialist",
-            icon: specialistIcon.src
+            icon: specialistIcon.src,
+            internalID: "SPECIAL"
         }
     ];
 
 
 
-    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setPage && setPage(1);
-        setSearchTerm(event.target.value);
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(e.target.value);
+        setPage(1);
         // setInputValue(event.target.value);
         // console.log(event.target.value);
     };
-
-    const handleClick = () => {
-        console.log("Input value is: " + searchTerm);
+    const handleRarityFilter = (rarity: string) => {
+        setSelectedRarity(rarity);
+        setPage(1);
     };
 
+    const handleClassFilter = (className: string)=> {
+        setSelectedClass(className);
+        setPage(1);
+    };
+    
 
-    const handleClassFilter = (className: string) => {
-            console.log("Class filter clicked: " + className);
-    }
-
-
-    const handleRarityFilter = (rarity: string) => {
-            console.log("Rarity filter clicked: " + rarity);
-    }
-
-
-    function ClassButtons({img, className}: ClassButtonProps){
+    function ClassButtons({img, className, internalID}: ClassButtonProps){
         return(
-            <Button className='bg-zinc-800'
-                    onClick={() => handleClassFilter(className)}
+            <ToggleGroupItem value={internalID} className='bg-zinc-800'
+                    onClick={() => handleClassFilter(internalID)}
             >
                 <img src={img} alt={className} className="w-4 h-4 mr-2"/>
                 {className}
-            </Button>
+            </ToggleGroupItem>
         )
 
     }
@@ -135,12 +142,17 @@ export default function OperatorFilter({searchTerm, setSearchTerm, setPage}: Ope
                     6★
                 </Button>
             </ButtonGroup>
-            <ButtonGroup className="">
-                <Button className='bg-zinc-800'>All</Button>
+            <ToggleGroup type="single" className='text-white'>
+                <ToggleGroupItem className='bg-zinc-800'
+                value='All'
+                        onClick={() => handleClassFilter("All")}
+                >
+                    All
+                </ToggleGroupItem>
                 {arknightsClasses.map((c) => (
-                    <ClassButtons key={c.name} img={c.icon} className={c.name}/>
+                    <ClassButtons key={c.name} img={c.icon} className={c.name} internalID={c.internalID}/>
                 ))}
-            </ButtonGroup>
+            </ToggleGroup>
         </div>
     )
 }

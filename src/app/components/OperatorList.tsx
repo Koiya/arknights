@@ -17,7 +17,8 @@ import OperatorFilter from './OperatorFilter';
 
 export default function OperatorList(){
     const [operators, setOperators] = useState<OperatorData>({});
-    // const [searchResults, setSearchResults] = useState<OperatorData>({});
+    const [selectedRarity, setSelectedRarity] = useState<string>('All');
+    const [selectedClass, setSelectedClass] = useState<string>('All');
     const [searchTerm, setSearchTerm] = useState("");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -41,9 +42,13 @@ export default function OperatorList(){
         loadOperators();
     }, []);
 
-    const filteredOperators: [string, Operator][] = Object.entries(operators).filter(
-        ([id, operator]: [string, Operator]) =>
-        operator.name.toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredOperators: [string, Operator][] = Object.entries(operators).reverse().filter(
+        ([id, operator]: [string, Operator]) => {
+            const matchesSearch = operator.name.toLowerCase().includes(searchTerm.toLowerCase());
+            const matchesRarity = selectedRarity === 'All' || operator.rarity === selectedRarity;
+            const matchesClass = selectedClass === 'All' || operator.profession === selectedClass;
+            return matchesSearch && matchesRarity && matchesClass;
+        }
     );
         
     // Calculate pagination
@@ -72,14 +77,19 @@ export default function OperatorList(){
 
     return (
         <div className="mb-4 min-h-screen mx-auto p-4">
-            <OperatorFilter searchTerm={searchTerm} setSearchTerm={setSearchTerm} setPage={setCurrentPage}/>
-            {currentItems.map(([id, operator]) => (
+            <OperatorFilter 
+            searchTerm={searchTerm} 
+            setSearchTerm={setSearchTerm} 
+            setSelectedRarity={setSelectedRarity}
+            setSelectedClass={setSelectedClass}
+            setPage={setCurrentPage}/>
+            {currentItems.length > 0 ? (currentItems.map(([id, operator]) => (
                 <OperatorPanel
                 key={id}
                 id={id}
                 operator={operator}
                 />
-            ))}
+            ))) : (<p className="text-gray-400 text-center py-8 ">No characters found</p>)}
 
             <Pagination className="text-white">
                 <PaginationContent>
